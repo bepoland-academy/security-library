@@ -29,6 +29,7 @@ public class JwtService {
     private static final String ROLES_CLAIM = "roles";
     private static final String EMAIL_CLAIM = "email";
     private static final String GUID_CLAIM = "guid";
+    public static final String ROLE_PREFIX = "ROLE_";
 
     @Value("${jwt.config.expirationTime}")
     String expirationTime;
@@ -79,7 +80,7 @@ public class JwtService {
         List<String> roles = (List<String>) jwtObject.getBody().get(ROLES_CLAIM);
         return roles.stream()
                 .filter(StringUtils::isNotBlank)
-                .map(SimpleGrantedAuthority::new)
+                .map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role))
                 .collect(Collectors.toList());
     }
 
