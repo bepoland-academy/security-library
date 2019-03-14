@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,8 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @Value("${authentication.publicUrls}")
+    @Value("${authentication.publicUrls:@null}")
     public void setPublicUrls(String[] publicUrls) {
-        this.publicUrls = Arrays.asList(publicUrls);
+        if (publicUrls == null) {
+            this.publicUrls = new ArrayList<>();
+        } else {
+            this.publicUrls = Arrays.asList(publicUrls);
+        }
     }
 }
